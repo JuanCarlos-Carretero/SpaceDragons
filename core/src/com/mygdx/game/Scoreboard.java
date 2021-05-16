@@ -49,14 +49,17 @@ public class Scoreboard {
     }
 
     private void ordenarPuntuaciones() {
-//          scoreList.sort(new Comparator<Score>() {
-//            @Override
-//            public int compare(Score o1, Score o2) {
-//                if(o1.puntuacion > o2.puntuacion) return -1;
-//                if (o1.puntuacion == o2.puntuacion) return 0;
-//               return 1; }
-//          }
-//          );
+/*
+        scoreList.sort(new Comparator<Score>() {
+        @Override
+            public int compare(Score o1, Score o2) {
+                if(o1.puntuacion > o2.puntuacion) return -1;
+                if (o1.puntuacion == o2.puntuacion) return 0;
+                return 1;
+            }
+        }
+        );
+*/
 
         Score scoreGuard = scoreList.get(0);
         int aBorrar = 0;
