@@ -1,1 +1,10 @@
 alan,80
+alan,55
+alan,40
+alan,155
+alan,5
+alan,5
+alan,25
+alan,5
+alan,0
+alan,0

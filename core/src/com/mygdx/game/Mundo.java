@@ -12,8 +12,7 @@ public class Mundo {
     FondoPantalla fondo;
     Jugador jugador;
     HUD hud;
-    int meteoritox;
-    int meteoritoy;
+    int vmuerto = 0;
 
     List<Meteorito> meteoritos = new ArrayList<>();
     List<Meteorito> meteoritosAEliminar = new ArrayList<>();
@@ -104,7 +103,7 @@ public class Mundo {
                 jugador.vidas--;
                 jugador.muerto = true;
                 jugador.respawn.activar();
-                if (jugador.vidas == 2){
+                if (jugador.vidas == vmuerto){
                     Jugador.gameover = true;
                     Jugador.scoreboard.guardarPuntuacion(jugador.puntos);
                 }
@@ -135,7 +134,7 @@ public class Mundo {
                 jugador.vidas--;
                 jugador.muerto = true;
                 jugador.respawn.activar();
-                if (jugador.vidas == 0){
+                if (jugador.vidas == vmuerto){
                     Jugador.gameover = true;
                     Jugador.scoreboard.guardarPuntuacion(jugador.puntos);
                 }
