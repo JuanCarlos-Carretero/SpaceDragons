@@ -3,7 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Items {
+public class Item {
     static int item;
     float x, y, w, h, v;
 
@@ -12,14 +12,14 @@ public class Items {
     // Texture alcance = new Texture("items/alcance.png");
     // Texture ulti = new Texture("items/ulti.png");
 
-    Items(float x, float y){
+    Item(float x, float y){
         this.x = x;
         this.y = y;
         w = 50;
         h = 70;
         v = 1;
 
-        item = SpaceDragons.random.nextInt(5);
+        item = 5; //SpaceDragons.random.nextInt(5);
     }
 
     void render(SpriteBatch batch){

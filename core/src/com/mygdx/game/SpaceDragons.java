@@ -37,9 +37,7 @@ public class SpaceDragons extends ApplicationAdapter {
 
 		batch.begin();
 		mundo.render(batch, bitmapFont);
-		if (Jugador.gameover){
-			Jugador.scoreboard.render(batch, bitmapFont);
-		}
+
 		batch.end();
 	}
 }

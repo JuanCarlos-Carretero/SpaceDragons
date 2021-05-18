@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Jugador {
-    static Scoreboard scoreboard;
-    static boolean gameover;
+    boolean gameover;
     Animaciones animacion = new Animaciones(8f, true, "dragon/dragon_pos1.png", "dragon/dragon_pos2.png","dragon/dragon_pos3.png");
     float x, y, w, h, v;
     int vidas = 3;
@@ -55,7 +54,6 @@ public class Jugador {
 
     void update(){
         for (Proyectil proyectil: proyectiles) {
-
             proyectil.update();
         }
 
@@ -71,15 +69,11 @@ public class Jugador {
         if(x > 1530) x = 0;
         if(y < 0) y = 0;
         if(y > 1080-h) y = 1080-h;
+        if(vidas>=3)vidas = 3;
 
         if(respawn.suena()){
             muerto = false;
         }
-    }
-    public void morir() {
-        vidas--;
-        muerto = true;
-        respawn.activar();
     }
 }
 
