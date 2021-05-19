@@ -1,11 +1,14 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class FondoPantalla {
     Texture texture;
     float x, y;
+    Sound musicaDeFondo;
 
     FondoPantalla(){
         texture =  new Texture("fondo/espacio.jpg");

@@ -16,7 +16,7 @@ public class Jugador {
     int puntos = 0;
     boolean muerto = false;
 
-    Sound sound;
+    Sound sonidoLlamarada;
 
     List<Proyectil> proyectiles;
     List<Proyectil> proyectilAEliminar = new ArrayList<>();
@@ -33,6 +33,9 @@ public class Jugador {
         proyectiles = new ArrayList<>();
 
         respawn = new Temporizador(120, false);
+        sonidoLlamarada = Gdx.audio.newSound(Gdx.files.internal("Sound/llamarada.mp3"));
+        sonidoLlamarada.setLooping(sonidoLlamarada.play(),true);
+        sonidoLlamarada.pause();
     }
 
     void render(SpriteBatch batch){
@@ -67,9 +70,12 @@ public class Jugador {
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             proyectiles.add(new Proyectil(x+(w/2)*0.82f, y+h*0.9f));
-            sound = Gdx.audio.newSound(Gdx.files.internal(""));
-            sound.play();
+
+            sonidoLlamarada.resume();
+        }else{
+            sonidoLlamarada.pause();
         }
+
         if(x < 0) x = 1530;
         if(x > 1530) x = 0;
         if(y < 0) y = 0;
