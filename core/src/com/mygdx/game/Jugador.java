@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ public class Jugador {
     int vidas = 3;
     int puntos = 0;
     boolean muerto = false;
+
+    Sound sound;
 
     List<Proyectil> proyectiles;
     List<Proyectil> proyectilAEliminar = new ArrayList<>();
@@ -64,6 +67,8 @@ public class Jugador {
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             proyectiles.add(new Proyectil(x+(w/2)*0.82f, y+h*0.9f));
+            sound = Gdx.audio.newSound(Gdx.files.internal(""));
+            sound.play();
         }
         if(x < 0) x = 1530;
         if(x > 1530) x = 0;

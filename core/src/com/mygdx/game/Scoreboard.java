@@ -6,14 +6,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapLayers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -37,6 +35,7 @@ public class Scoreboard {
     private boolean saved;
 
     List<Score> scoreList = new ArrayList<>();
+    List<Score> scoreCopia;
     List<Score> scoreOrdenado = new ArrayList<>();
     Score scoreGuard;
 
@@ -78,7 +77,7 @@ public class Scoreboard {
         }
 
         if(index > 2 && !saved) {
-//            guardarPuntuacion(puntos);
+            guardarPuntuacion(puntos);
             leerPuntuaciones();
             saved = true;
         }
@@ -104,23 +103,21 @@ public class Scoreboard {
         }else {
             font.draw(batch, "SCOREBOARD", x+220, y+400);
 
-            //for (int i = 0; i < 5 && i < scoreList.size(); i++) {
-              //  font.draw(batch, scoreList.get(i).nombre, x+200, y+340 - i * 40);
-                //font.draw(batch, "" + scoreList.get(i).puntuacion, x+380, y+340 - i * 40);
-            //}
-
-            for (int j = 0; j < 3; j++) {
-                for (int i = 1; i < scoreList.size(); i++) {
-                    if (scoreGuard.puntuacion <= scoreList.get(i).puntuacion){
-                        scoreGuard = scoreList.get(i);
+            scoreCopia = scoreList;
+            for (int j = 0; j < scoreList.size(); j++) {
+                if(!scoreCopia.isEmpty()) scoreGuard = scoreCopia.get(0);
+                else break;
+                for (int i = 1; i < scoreCopia.size(); i++) {
+                    if (scoreGuard.puntuacion <= scoreCopia.get(i).puntuacion){
+                        scoreGuard = scoreCopia.get(i);
                         aborrar = i;
                     }
                 }
                 scoreOrdenado.add(scoreGuard);
-                scoreList.remove(scoreList.get(aborrar));
+                scoreCopia.remove(scoreGuard);
             }
 
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < scoreOrdenado.size() && i < 5; i++) {
                   font.draw(batch, scoreOrdenado.get(i).nombre, x+200, y+340 - i * 40);
                   font.draw(batch, "" + scoreOrdenado.get(i).puntuacion, x+380, y+340 - i * 40);
                 }
@@ -159,7 +156,6 @@ public class Scoreboard {
 
                 scoreList.add(new Score(nombre, puntos));
             }
-            scoreGuard = scoreList.get(0);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
