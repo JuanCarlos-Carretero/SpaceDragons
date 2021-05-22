@@ -7,10 +7,9 @@ public class Item {
     static int item;
     float x, y, w, h, v;
 
-    Texture corazon = new Texture("items/corazon.png");
-    // Texture velocidad = new Texture("items/velocidad.png");
-    // Texture alcance = new Texture("items/alcance.png");
-    // Texture ulti = new Texture("items/ulti.png");
+    Animaciones corazon = new Animaciones(8f,true,"items/corazon.png", "items/corazon1.png" );
+    Animaciones velocidad = new Animaciones(8f,true,"items/velocidad.png", "items/velocidad1.png");
+    Animaciones alcance = new Animaciones(8f,true,"items/alcance.png", "items/alcance1.png");
 
     Item(float x, float y){
         this.x = x;
@@ -19,25 +18,21 @@ public class Item {
         h = 70;
         v = 1;
 
-        item = 5; //SpaceDragons.random.nextInt(5);
+        item = SpaceDragons.random.nextInt(2);
+
     }
 
     void render(SpriteBatch batch){
-        if (item == 5){
-            batch.draw(corazon, x, y, w, h);
-        }
-        /* if (item == 4){
-            batch.draw(velocidad, x, y, w, h);
-        }
-        if (item == 3){
-            batch.draw(alcance, x, y, w, h);
-        }
-        if (item == 2){
-            batch.draw(ulti, x, y, w, h);
+        if (item == 0){
+            batch.draw(corazon.getFrame(Temporizador.tiempoJuego), x, y, w, h);
         }
         if (item == 1){
-            batch.draw(corazon, x, y, w, h);
-        } */
+            batch.draw(alcance.getFrame(Temporizador.tiempoJuego), x, y, w, h);
+        }
+        if (item == 2){
+            batch.draw(velocidad.getFrame(Temporizador.tiempoJuego), x, y, w, h);
+        }
+
     }
 
     public void update() {

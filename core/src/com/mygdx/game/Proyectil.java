@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Proyectil {
-    static Texture texture = new Texture("proyectil/bala.png");
+    static Texture texture = new Texture("proyectil/fuego.png");
     float x, y, w, h, v;
 
     Proyectil(float xNave, float yNave){

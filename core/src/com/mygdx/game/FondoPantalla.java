@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class FondoPantalla {
     Texture texture;
     float x, y;
-    Sound musicaDeFondo;
 
     FondoPantalla(){
         texture =  new Texture("fondo/espacio.jpg");

@@ -29,7 +29,7 @@ public class Scoreboard {
         }
     }
 
-    Texture background = new Texture("back.png");
+    Texture background = new Texture("menu/back.png");
     char[] nombre = {'A', 'A','A'};  // 65:A -> 90:Z
     int index = 0;  // 0=1a letra; 1=2a letra; 2=3a letra; 3=replay; 4=exit
     private boolean saved;
@@ -78,7 +78,6 @@ public class Scoreboard {
 
         if(index > 2 && !saved) {
             guardarPuntuacion(puntos);
-            leerPuntuaciones();
             saved = true;
         }
         return 0;

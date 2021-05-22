@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -14,7 +15,9 @@ public class Mundo {
     FondoPantalla fondo;
     Jugador jugador;
     HUD hud;
-    int vmuerto = 2;
+    int vmuerto = 0;
+
+    Sound mundo;
 
     List<Meteorito> meteoritos = new ArrayList<>();
     List<Meteorito> meteoritosAEliminar = new ArrayList<>();
@@ -23,18 +26,25 @@ public class Mundo {
     List<Proyectil> proyectilAEliminar = new ArrayList<>();
     List<Item> items = new ArrayList<>();
     List<Item> itemAEliminar = new ArrayList<>();
+    List<Explosion> explosiones = new ArrayList<>();
+    List<Explosion> explosionesAEliminar = new ArrayList<>();
 
     Temporizador temporizadorNuevoMeteorito;
     Temporizador temporizadorNuevoAlien;
+
     Scoreboard scoreboard;
 
 
-    public void create() {
+    public void create(boolean menu) {
         BitmapFont font = new BitmapFont();
         font.setColor(Color.WHITE);
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         font.getData().setScale(2f);
 
+        if (!menu) {
+            mundo = Gdx.audio.newSound(Gdx.files.internal("Sound/Slammin.mp3"));
+            mundo.setLooping(mundo.play(0.2f), true);
+        }
         inicializarJuego();
     }
 
@@ -50,7 +60,6 @@ public class Mundo {
         hud = new HUD();
 
         scoreboard = new Scoreboard();
-
     }
 
     void update() {
@@ -71,39 +80,48 @@ public class Mundo {
         proyectilAEliminar.clear();
         aliensAEliminar.clear();
 
-        for (Item item : items) { //  a b c d e
+        for (Item item : items) {
             if (Util.solapan(jugador.x, jugador.y, jugador.w, jugador.h, item.x, item.y, item.w, item.h)) {
                 itemAEliminar.add(item);
-
                 if (!jugador.gameover && !jugador.muerto) {
-                    if (Item.item == 5) {
-                        jugador.vidas++;
-                    }
-                    if (Item.item == 4) {
-                        jugador.v++;
-                    }
-                    if (Item.item == 3) {
-                        jugador.vidas++;
-                    }
-                    if (Item.item == 2) {
+                    if (Item.item == 0) {
                         jugador.vidas++;
                     }
                     if (Item.item == 1) {
-                        jugador.vidas++;
+                        if (jugador.alcance < 400) {
+                            jugador.alcance *= 1.5f;
+                        } else if (jugador.alcance >= 400){
+                            jugador.alcance = 400;
+                        }
+                    }
+                    if (Item.item == 2) {
+                        if (jugador.velocidad < 15) {
+                            jugador.velocidad *= 1.5f;
+                        }else if (jugador.velocidad >= 15){
+                            jugador.velocidad = 15;
+                        }
                     }
                 }
             }
-
             if (item.y <= 0) itemAEliminar.add(item);
         }
 
         for (Meteorito meteorito : meteoritos) {
             for (Proyectil proyectil : jugador.proyectiles) {
                 if (Util.solapan(proyectil.x, proyectil.y, proyectil.w, proyectil.h, meteorito.x, meteorito.y, meteorito.w, meteorito.h)) {
-                    items.add(new Item(meteorito.x, meteorito.y));
                     proyectilAEliminar.add(proyectil);
-                    meteoritosAEliminar.add(meteorito);
-                    jugador.puntos += 5;
+                    if(meteorito.vida>0) {
+                        meteorito.vida--;
+                    } else if (meteorito.vida == 0){
+                        meteorito.muerto = true;
+
+                    }
+                    if (meteorito.muerto){
+                        explosiones.add(new Explosion(meteorito.x, meteorito.y, meteorito.w, meteorito.h));
+                        meteoritosAEliminar.add(meteorito);
+                        items.add(new Item(meteorito.x, meteorito.y));
+                        jugador.puntos += 2;
+                    }
                 }
             }
 
@@ -138,10 +156,19 @@ public class Mundo {
             if (alien.y <= 0) aliensAEliminar.add(alien);
         }
 
+        for (Explosion explosion : explosiones) {
+            if (explosion.texplosion.suena()){
+                explosionesAEliminar.add(explosion);
+            }
+        }
+
+        for (Explosion explosion : explosionesAEliminar) explosiones.remove(explosion);
+
         for (Proyectil proyectil : proyectilAEliminar) jugador.proyectiles.remove(proyectil);
         for (Alien alien : aliensAEliminar) aliens.remove(alien);
         for (Meteorito meteorito : meteoritosAEliminar) meteoritos.remove(meteorito);
         for (Item item : itemAEliminar) items.remove(item);
+
 
         if (jugador.gameover) {
             int result = scoreboard.update(jugador.puntos);
@@ -158,6 +185,9 @@ public class Mundo {
         fondo.render(batch);
         jugador.render(batch);
         hud.render(batch);
+        for (Explosion explosion :explosiones) {
+            explosion.render(batch);
+        }
 
         hud.jugador(jugador.vidas, jugador.puntos);
 

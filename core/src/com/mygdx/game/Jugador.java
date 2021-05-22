@@ -11,9 +11,10 @@ import java.util.List;
 public class Jugador {
     boolean gameover;
     Animaciones animacion = new Animaciones(8f, true, "dragon/dragon_pos1.png", "dragon/dragon_pos2.png","dragon/dragon_pos3.png");
-    float x, y, w, h, v;
+    float x, y, w, h, v, a, velocidad, alcance;
     int vidas = 3;
     int puntos = 0;
+    int duracion_mejora;
     boolean muerto = false;
 
     Sound sonidoLlamarada;
@@ -22,19 +23,30 @@ public class Jugador {
     List<Proyectil> proyectilAEliminar = new ArrayList<>();
 
     Temporizador respawn;
+    Temporizador talcance;
+    Temporizador tvelocidad;
 
     Jugador(){
-        x = 100;
+        x = 500;
         y = 100;
         w = 200;
         h = 150;
-        v = 10;
+        v = 8;
+        a = 200;
+
+        velocidad = v;
+        alcance = a;
+
+        duracion_mejora = 1400;
 
         proyectiles = new ArrayList<>();
 
         respawn = new Temporizador(120, false);
+        talcance = new Temporizador(duracion_mejora, true);
+        tvelocidad = new Temporizador(duracion_mejora, true);
+
         sonidoLlamarada = Gdx.audio.newSound(Gdx.files.internal("Sound/llamarada.mp3"));
-        sonidoLlamarada.setLooping(sonidoLlamarada.play(),true);
+        sonidoLlamarada.setLooping(sonidoLlamarada.play(0.1f),true);
         sonidoLlamarada.pause();
     }
 
@@ -48,7 +60,7 @@ public class Jugador {
             proyectil.render(batch);
         }
         for (Proyectil proyectil: proyectiles) {
-            if (proyectil.y > y + 200) {
+            if (proyectil.y > y + alcance) {
                 proyectilAEliminar.add(proyectil);
             }
         }
@@ -70,7 +82,6 @@ public class Jugador {
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             proyectiles.add(new Proyectil(x+(w/2)*0.82f, y+h*0.9f));
-
             sonidoLlamarada.resume();
         }else{
             sonidoLlamarada.pause();
@@ -81,10 +92,15 @@ public class Jugador {
         if(y < 0) y = 0;
         if(y > 1080-h) y = 1080-h;
         if(vidas>=3)vidas = 3;
-
-        if(respawn.suena()){
+        if (respawn.suena()) {
             muerto = false;
+        }
+
+        if (talcance.suena()) {
+            alcance = a;
+        }
+        if (tvelocidad.suena()) {
+            velocidad = v;
         }
     }
 }
-
