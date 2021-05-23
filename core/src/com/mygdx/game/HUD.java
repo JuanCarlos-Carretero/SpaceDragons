@@ -62,7 +62,7 @@ public class HUD {
             batch.draw(muerto.getFrame(Temporizador.tiempoJuego), 1745, 850, 150, 150);
         }
 
-        font.draw(batch,""+Temporizador.tiempoJuego, 50, 1000);
+        if (!SpaceDragons.menu) font.draw(batch,""+Temporizador.tiempoJuego, 50, 1000);
         font.getData().setScale(1.3f);
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
     }

@@ -1,8 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
@@ -10,11 +7,12 @@ import java.util.List;
 
 public class Mother {
     Animaciones animacion = new Animaciones(15f,true,"mother/mother.png","mother/mother1.png","mother/mother2.png");
-    Sound disparo;
+    //Sound disparo;
     float vida, x, y, w, h, v;
-    boolean muerta = false;
+    static boolean Mother_muerta;
 
-    List<Proyectil> proyectiles;
+    List<Proyectil_Mother> proyectil_mothers;
+    List<Proyectil_Mother> proyectil_mothersAEliminar = new ArrayList<>();
     Temporizador disparos;
 
     Mother(){
@@ -25,23 +23,33 @@ public class Mother {
         h = 700;
         v = 1;
 
-        proyectiles = new ArrayList<>();
-        disparos = new Temporizador(150,true);
+        proyectil_mothers = new ArrayList<>();
+        disparos = new Temporizador(120,true);
+        Mother_muerta = true;
     }
 
     void render(SpriteBatch batch){
         batch.draw(animacion.getFrame(Temporizador.tiempoJuego), x, y, w, h);
 
-        for (Proyectil proyectil: proyectiles) {
-            proyectil.render(batch);
+        if (!Mother_muerta){
+            for (Proyectil_Mother proyectil_mother: proyectil_mothers) {
+                proyectil_mother.render(batch);
+            }
+            for (Proyectil_Mother proyectil_mother: proyectil_mothersAEliminar){
+                proyectil_mothersAEliminar.remove(proyectil_mother);
+            }
         }
     }
 
     public void update() {
         if (disparos.suena()) {
-            proyectiles.add(new Proyectil(x+(w/2)*0.82f, y+h*0.9f,"proyectil/bala.png"));
-            disparo.play();
+                proyectil_mothers.add(new Proyectil_Mother(SpaceDragons.random.nextInt(1080), y*0.9f));
+            //disparo.play();
         }
+        for (Proyectil_Mother proyectil_mother: proyectil_mothers) {
+            proyectil_mother.update();
+        }
+
         if(y == 700){
             y = 701;
         } else {

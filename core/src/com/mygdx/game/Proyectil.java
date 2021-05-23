@@ -7,13 +7,13 @@ public class Proyectil {
     static Texture texture;
     float x, y, w, h, v;
 
-    Proyectil(float xNave, float yNave, String textura){
+    Proyectil(float xNave, float yNave){
         x = xNave;
         y = yNave;
         w = 40;
         h = 80;
         v = 15;
-        texture = new Texture(textura);
+        texture = new Texture("proyectil/fuego.png");
     }
 
     void render(SpriteBatch batch){

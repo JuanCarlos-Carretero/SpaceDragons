@@ -82,7 +82,7 @@ public class Jugador {
         if (Gdx.input.isKeyPressed(Input.Keys.S)) y -= v;
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            proyectiles.add(new Proyectil(x+(w/2)*0.82f, y+h*0.9f,"proyectil/fuego.png"));
+            proyectiles.add(new Proyectil(x+(w/2)*0.82f, y+h*0.9f));
             sonidoLlamarada.resume();
         }else{
             sonidoLlamarada.pause();

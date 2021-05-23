@@ -29,6 +29,7 @@ public class Mundo {
     List<Mother> motherAEliminar = new ArrayList<>();
 
     List<Proyectil> proyectilAEliminar = new ArrayList<>();
+    List<Proyectil_Mother> proyectil_motherAEliminar= new ArrayList<>();
 
     List<Item> items = new ArrayList<>();
     List<Item> itemAEliminar = new ArrayList<>();
@@ -64,17 +65,22 @@ public class Mundo {
         aliens.add(new Alien());
 
         temporizadorNuevoMeteorito = new Temporizador(700);
-        temporizadorNuevoAlien = new Temporizador(120);
-        temporizadorNuevaMother = new Temporizador(2500);
+        temporizadorNuevoAlien = new Temporizador(60);
+        temporizadorNuevaMother = new Temporizador(2000);
 
         scoreboard = new Scoreboard();
+
+        meteoritos.clear();
+        aliens.clear();
+        mothers.clear();
     }
 
     void update() {
         Temporizador.tiempoJuego += 1;
 
-        if (Temporizador.tiempoJuego == 1000){
+        if (temporizadorNuevaMother.suena() && mothers.size()<1){
             mothers.add(new Mother());
+            Mother.Mother_muerta = false;
         }
 
         if (temporizadorNuevoMeteorito.suena()) {
@@ -176,24 +182,27 @@ public class Mundo {
                     if(mother.vida>0) {
                         mother.vida--;
                     } else if (mother.vida == 0){
-                        mother.muerta = true;
+                        mother.Mother_muerta = true;
                     }
-                    if (mother.muerta){
+                    if (mother.Mother_muerta){
                         explosiones.add(new Explosion(mother.x, mother.y, mother.w, mother.h));
                         motherAEliminar.add(mother);
                         jugador.puntos += 200;
                     }
                 }
             }
-
-            if (!jugador.gameover && !jugador.muerto && Util.solapan(mother.x, mother.y, mother.w, mother.h, jugador.x, jugador.y, jugador.w, jugador.h)) {
-                jugador.vidas--;
-                jugador.muerto = true;
-                jugador.respawn.activar();
-                if (jugador.vidas == vmuerto) {
-                    jugador.gameover = true;
+            for (Proyectil_Mother proyectil_mother : mother.proyectil_mothers) {
+                if (!jugador.gameover && !jugador.muerto && (Util.solapan(mother.x, mother.y, mother.w, mother.h, jugador.x, jugador.y, jugador.w, jugador.h) || Util.solapan(proyectil_mother.x, proyectil_mother.y, proyectil_mother.w, proyectil_mother.h, jugador.x, jugador.y, jugador.w, jugador.h))) {
+                    jugador.vidas--;
+                    jugador.muerto = true;
+                    jugador.respawn.activar();
+                    if (jugador.vidas == vmuerto) {
+                        jugador.gameover = true;
+                    }
                 }
             }
+
+
         }
 
         for (Explosion explosion : explosiones) {
