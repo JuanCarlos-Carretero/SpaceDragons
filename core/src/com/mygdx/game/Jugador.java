@@ -59,6 +59,7 @@ public class Jugador {
         for (Proyectil proyectil: proyectiles) {
             proyectil.render(batch);
         }
+
         for (Proyectil proyectil: proyectiles) {
             if (proyectil.y > y + alcance) {
                 proyectilAEliminar.add(proyectil);
@@ -81,7 +82,7 @@ public class Jugador {
         if (Gdx.input.isKeyPressed(Input.Keys.S)) y -= v;
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            proyectiles.add(new Proyectil(x+(w/2)*0.82f, y+h*0.9f));
+            proyectiles.add(new Proyectil(x+(w/2)*0.82f, y+h*0.9f,"proyectil/fuego.png"));
             sonidoLlamarada.resume();
         }else{
             sonidoLlamarada.pause();
@@ -92,6 +93,7 @@ public class Jugador {
         if(y < 0) y = 0;
         if(y > 1080-h) y = 1080-h;
         if(vidas>=3)vidas = 3;
+
         if (respawn.suena()) {
             muerto = false;
         }

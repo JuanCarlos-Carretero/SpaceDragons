@@ -17,6 +17,7 @@ public class SpaceDragons extends ApplicationAdapter {
 
 	static SpriteBatch batch;
 	Dragon_Menu dragonMenu1;
+	static HUD hud;
 	Texture tmenu;
 	Texture menuTransparente;
 	Texture titulo;
@@ -29,6 +30,7 @@ public class SpaceDragons extends ApplicationAdapter {
 	static boolean menu = true;
 	boolean pausa = true;
 	Sound musica_menu;
+	Sound musica_juego;
 
 	@Override
 	public void create() {
@@ -42,6 +44,7 @@ public class SpaceDragons extends ApplicationAdapter {
 		titulo = new Texture("menu/Titulo.png");
 		press_start = new Animaciones(8f,true,"menu/pressenter.png","menu/pressenter1.png","menu/pressenter2.png","menu/pressenter3.png");
 		mundo = new Mundo();
+		hud = new HUD();
 		mundo.create(menu);
 
 		musica_menu = Gdx.audio.newSound(Gdx.files.internal("Sound/Dance Of Death.mp3"));
@@ -53,14 +56,18 @@ public class SpaceDragons extends ApplicationAdapter {
 		Gdx.gl.glClearColor(1,1,1,0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && menu){
 			menu = false;
 			pausa = false;
 			musica_menu.stop();
+			musica_juego = Gdx.audio.newSound(Gdx.files.internal("Sound/Slammin.mp3"));
+			musica_juego.setLooping(musica_juego.play(0.1f),true);
 		}
+
 		if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
 			pausa = !pausa;
 		}
+
 		if (!pausa) {
 			mundo.update();
 		}
@@ -82,10 +89,11 @@ public class SpaceDragons extends ApplicationAdapter {
 			if (pausa){
 				batch.draw(menuTransparente, 0, 0, 1920, 1080);
 				font.draw(batch, "PAUSE", 1720/2f, 670);
-				font.draw(batch, "PRESS KEY ENTER OR P", 720, 620);
+				font.draw(batch, "PRESS KEY P", 810, 620);
 				font.draw(batch, "FOR CONTINUE", 800, 570);
 			}
 		}
+		hud.render(batch);
 		batch.end();
 	}
 }
