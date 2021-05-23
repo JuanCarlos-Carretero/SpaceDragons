@@ -18,9 +18,11 @@ public class SpaceDragons extends ApplicationAdapter {
 	static SpriteBatch batch;
 	Dragon_Menu dragonMenu1;
 	static HUD hud;
+
 	Texture tmenu;
 	Texture menuTransparente;
 	Texture titulo;
+
 	Animaciones press_start;
 	Animaciones dragon;
 
@@ -29,8 +31,11 @@ public class SpaceDragons extends ApplicationAdapter {
 	Mundo mundo;
 	static boolean menu = true;
 	boolean pausa = true;
+
 	Sound musica_menu;
 	Sound musica_juego;
+
+
 
 	@Override
 	public void create() {

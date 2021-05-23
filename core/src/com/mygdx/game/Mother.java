@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
@@ -7,7 +9,7 @@ import java.util.List;
 
 public class Mother {
     Animaciones animacion = new Animaciones(15f,true,"mother/mother.png","mother/mother1.png","mother/mother2.png");
-    //Sound disparo;
+    Sound disparo;
     float vida, x, y, w, h, v;
     static boolean Mother_muerta;
 
@@ -23,6 +25,7 @@ public class Mother {
         h = 700;
         v = 1;
 
+        disparo = Gdx.audio.newSound(Gdx.files.internal("Sound/laser.mp3")); ;
         proyectil_mothers = new ArrayList<>();
         disparos = new Temporizador(120,true);
         Mother_muerta = true;
@@ -44,7 +47,7 @@ public class Mother {
     public void update() {
         if (disparos.suena()) {
                 proyectil_mothers.add(new Proyectil_Mother(SpaceDragons.random.nextInt(1080), y*0.9f));
-            //disparo.play();
+                disparo.play(0.2f);
         }
         for (Proyectil_Mother proyectil_mother: proyectil_mothers) {
             proyectil_mother.update();
